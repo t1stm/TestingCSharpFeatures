@@ -11,7 +11,7 @@ namespace DiscordBot.Tools
     public class FeedableStream : Stream
     {
         private readonly Stream BackingStream;
-        private List<StreamData> Cache = new();
+        private readonly Queue<StreamData> Cache = new();
         private bool Updating;
         public bool WaitCopy { get; init; } = false;
 
@@ -22,7 +22,7 @@ namespace DiscordBot.Tools
 
         public void FillBuffer(StreamData data)
         {
-            lock (Cache) Cache.Add(data);
+            lock (Cache) Cache.Enqueue(data);
             var updateTask = new Task(UpdateTask);
             updateTask.Start();
             if (WaitCopy) updateTask.Wait();
@@ -43,10 +43,8 @@ namespace DiscordBot.Tools
             while (CacheCount() != 0)
             {
                 StreamData? data;
-                lock (Cache) data = Cache.FirstOrDefault();
-                if (data == null) continue;
+                lock (Cache) data = Cache.Dequeue();
                 BackingStream.Write(data.Data.ToArray(), data.Offset, data.Count);
-                lock (Cache) Cache.Remove(data);
                 var stringified = string.Concat(data.Data.Select(r => $"'{r}' ").ToArray()).Trim();
                 Console.WriteLine(stringified);
             }

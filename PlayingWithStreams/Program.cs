@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using DiscordBot.Tools;
 
 var data = new byte[]
@@ -11,7 +12,7 @@ var data = new byte[]
 
 var stream = new MemoryStream(data);
 stream.Position = 0;
-var destinations = new MemoryStream[]
+var destinations = new Stream[]
 {
     new MemoryStream(),
     new MemoryStream(),
@@ -21,7 +22,7 @@ var destinations = new MemoryStream[]
 
 var spreader = new StreamSpreader(CancellationToken.None, destinations);
 
-for (int i = 0; i < 4; i++)
+for (var i = 0; i < 4; i++)
 {
     stream.Position = 0;
     stream.CopyTo(spreader);
