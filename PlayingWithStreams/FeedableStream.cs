@@ -4,25 +4,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using PlayingWithStreams;
 
 namespace DiscordBot.Tools
 {
     public class FeedableStream : Stream
     {
         private readonly Stream BackingStream;
-        private List<byte[]> Cache = new();
+        private List<StreamData> Cache = new();
         private bool Updating;
+        public bool WaitCopy { get; init; } = false;
 
         public FeedableStream(Stream backingBackingStream)
         {
             BackingStream = backingBackingStream;
         }
 
-        public void FillBuffer(IEnumerable<byte> data)
+        public void FillBuffer(StreamData data)
         {
-            lock (Cache) Cache.Add(data.ToArray());
+            lock (Cache) Cache.Add(data);
             var updateTask = new Task(UpdateTask);
             updateTask.Start();
+            if (WaitCopy) updateTask.Wait();
         }
 
         private int CacheCount()
@@ -39,12 +42,12 @@ namespace DiscordBot.Tools
             Updating = true;
             while (CacheCount() != 0)
             {
-                byte[]? data;
+                StreamData? data;
                 lock (Cache) data = Cache.FirstOrDefault();
-                if (data == null) break;
-                BackingStream.Write(data);
+                if (data == null) continue;
+                BackingStream.Write(data.Data.ToArray(), data.Offset, data.Count);
                 lock (Cache) Cache.Remove(data);
-                var stringified = string.Concat(data.Select(r => $"'{r}' ").ToArray()).Trim();
+                var stringified = string.Concat(data.Data.Select(r => $"'{r}' ").ToArray()).Trim();
                 Console.WriteLine(stringified);
             }
 
@@ -73,7 +76,12 @@ namespace DiscordBot.Tools
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            FillBuffer(buffer);
+            FillBuffer(new StreamData
+            {
+                Data = buffer,
+                Offset = offset,
+                Count = count
+            });
         }
 
         public override bool CanRead => BackingStream.CanRead;

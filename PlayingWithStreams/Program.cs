@@ -11,7 +11,7 @@ var data = new byte[]
 
 var stream = new MemoryStream(data);
 stream.Position = 0;
-var destinations = new Stream[]
+var destinations = new MemoryStream[]
 {
     new MemoryStream(),
     new MemoryStream(),
@@ -27,13 +27,14 @@ for (int i = 0; i < 4; i++)
     stream.CopyTo(spreader);
 }
 
+Task.Delay(333).Wait(); // Artificial delay to see if the spreader is working.
+
 for (var i = 0; i < destinations.Length; i++)
 {
     var destination = destinations[i];
     destination.Position = 0;
-    Span<byte> readData = new();
+    Span<byte> readData = new(new byte[destination.Length]);
     var readBytes = destination.Read(readData);
-
     var stringified = string.Concat(readData.ToArray().Select(r => $"'{r}' ").ToArray()).Trim();
     
     Console.WriteLine($"({i}) => Bytes - {readBytes}: \"{stringified}\"");
