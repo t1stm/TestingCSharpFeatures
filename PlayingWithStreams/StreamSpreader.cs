@@ -28,7 +28,7 @@ namespace PlayingWithStreams
 
         public override void Flush()
         {
-            while (Destinations.All(r => r.Updating))
+            while (Destinations.Any(r => r.Updating))
             {
                 Task.Delay(33, Token).Wait(Token);
             }
