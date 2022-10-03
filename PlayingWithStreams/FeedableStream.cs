@@ -2,22 +2,27 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using PlayingWithStreams;
 
-namespace DiscordBot.Tools
+namespace PlayingWithStreams
 {
     public class FeedableStream : Stream
     {
         private readonly Stream BackingStream;
         private readonly Queue<StreamData> Cache = new();
-        private bool Updating;
+        public bool Updating;
+        private bool Closed { get; set; }
         public bool WaitCopy { get; init; } = false;
 
         public FeedableStream(Stream backingBackingStream)
         {
             BackingStream = backingBackingStream;
+        }
+
+        public override void Close()
+        {
+            Closed = true;
+            base.Close();
         }
 
         public void FillBuffer(StreamData data)
@@ -38,22 +43,29 @@ namespace DiscordBot.Tools
         
         private void UpdateTask()
         {
-            if (Updating) return;
-            Updating = true;
-            while (CacheCount() != 0)
+            try
             {
-                StreamData? data;
-                lock (Cache) data = Cache.Dequeue();
-                BackingStream.Write(data.Data.ToArray(), data.Offset, data.Count);
-                var stringified = string.Concat(data.Data.Select(r => $"'{r}' ").ToArray()).Trim();
-                Console.WriteLine(stringified);
-            }
+                if (Updating || Closed) return;
+                Updating = true;
+                while (CacheCount() != 0)
+                {
+                    StreamData? data;
+                    lock (Cache) data = Cache.Dequeue();
+                    BackingStream.Write(data.Data, data.Offset, data.Count);
+                    // Ironic I know. Some streams don't support synchronized writing. Too bad!
+                }
 
-            Updating = false;
+                Updating = false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Feedable stream update task failed: \"{e}\"");
+            }
         }
 
         public override void Flush()
         {
+            UpdateTask();
             BackingStream.Flush();
         }
 

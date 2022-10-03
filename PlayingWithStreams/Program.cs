@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscordBot.Tools;
+using PlayingWithStreams;
 
 var data = new byte[]
 {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace DiscordBot.Tools
+namespace PlayingWithStreams
 {
     public class StreamSpreader : Stream
     {
@@ -14,6 +14,15 @@ namespace DiscordBot.Tools
         {
             Destinations = destinations.Select(r => new FeedableStream(r)).ToArray();
             Token = token;
+        }
+
+        public override void Close()
+        {
+            foreach (var feedableStream in Destinations)
+            {
+                feedableStream.Close();
+            }
+            base.Close();
         }
 
         public override void Flush()
