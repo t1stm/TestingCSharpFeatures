@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace PlayingWithStreams
 {
@@ -27,7 +28,10 @@ namespace PlayingWithStreams
 
         public override void Flush()
         {
-            throw new NotImplementedException();
+            while (Destinations.All(r => r.Updating))
+            {
+                Task.Delay(33, Token).Wait(Token);
+            }
         }
 
         public override int Read(byte[] buffer, int offset, int count)
