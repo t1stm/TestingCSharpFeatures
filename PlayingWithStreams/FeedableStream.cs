@@ -41,7 +41,7 @@ namespace PlayingWithStreams
             }
         }
         
-        private void UpdateTask()
+        private async void UpdateTask()
         {
             try
             {
@@ -51,7 +51,7 @@ namespace PlayingWithStreams
                 {
                     StreamData? data;
                     lock (Cache) data = Cache.Dequeue();
-                    BackingStream.Write(data.Data, data.Offset, data.Count);
+                    await BackingStream.WriteAsync(data.Data.AsMemory(data.Offset, data.Count));
                     // Ironic I know. Some streams don't support synchronized writing. Too bad!
                 }
 

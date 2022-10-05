@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayingWithStreams", "PlayingWithStreams\PlayingWithStreams.csproj", "{FE9D63DD-4BBF-44D4-A218-F10E20AB7821}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomPlaylistFormat", "CustomPlaylistFormat\CustomPlaylistFormat.csproj", "{A1832F21-457B-4310-9E31-F99B06E16516}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{FE9D63DD-4BBF-44D4-A218-F10E20AB7821}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE9D63DD-4BBF-44D4-A218-F10E20AB7821}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE9D63DD-4BBF-44D4-A218-F10E20AB7821}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1832F21-457B-4310-9E31-F99B06E16516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1832F21-457B-4310-9E31-F99B06E16516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1832F21-457B-4310-9E31-F99B06E16516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1832F21-457B-4310-9E31-F99B06E16516}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
