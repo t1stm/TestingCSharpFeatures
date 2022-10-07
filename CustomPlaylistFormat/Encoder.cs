@@ -108,7 +108,7 @@ namespace CustomPlaylistFormat
         private void EncodePart(EncodingData data)
         {
             byte[] urlBytes = Encoding.UTF8.GetBytes(data.Url);
-            Writer.Write((short) urlBytes.Length);
+            Writer.Write((ushort) urlBytes.Length);
             Writer.Write(data.Type);
             Writer.Write(urlBytes);
         }
