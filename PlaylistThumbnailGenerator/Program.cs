@@ -13,7 +13,7 @@ var length = playlist.PlaylistItems?.Length ?? 0;
 
 const int length = 151;
 
-var fileStream = File.Open("./testing.jpg", FileMode.Create);
+var fileStream = File.Open("./testing.png", FileMode.Create);
 
 var info = new PlaylistInfo
 {
