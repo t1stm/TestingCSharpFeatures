@@ -105,12 +105,12 @@ namespace CustomPlaylistFormat
             if (readCount < 1) throw new InvalidDataException("Reading Playlist Stream: Reading one byte failed.");
             return oneByte[0];
         }
-        private short ReadShort()
+        private ushort ReadShort()
         {
             byte[] bytes = new byte[2];
             var readCount = Reader.Read(bytes);
             if (readCount < 2) throw new InvalidDataException("Reading Playlist Stream: Reading short failed.");
-            return BitConverter.ToInt16(bytes, 0);
+            return BitConverter.ToUInt16(bytes, 0);
         }
         
         private long ReadLong()
@@ -125,7 +125,8 @@ namespace CustomPlaylistFormat
         {
             Span<byte> readData = stackalloc byte[bytes];
             var readCount = Reader.Read(readData);
-            if (readCount != bytes) throw new InvalidDataException($"Reading Playlist Stream: Variable \"{nameof(readCount)}\" value is not equal to the number of bytes to be read. ReadCount: {readCount}, Bytes: {bytes}");
+            if (readCount != bytes) 
+            throw new InvalidDataException($"Reading Playlist Stream: Variable \"{nameof(readCount)}\" value is not equal to the number of bytes to be read. ReadCount: {readCount}, Bytes: {bytes}");
             return Encoding.UTF8.GetString(readData);
         }
 
