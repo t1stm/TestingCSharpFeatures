@@ -43,7 +43,7 @@ namespace PlaylistThumbnailGenerator
             GenerateImageEntry(info.Name, 620, 19, titleSettings, image);
             GenerateImageEntry($"Made by: {info.Maker}", 620, 182, makerSettings, image);
             GenerateImageEntry(info.Description, 620, 260, descriptionSettings, image);
-            GenerateImageEntry($"{info.Count} items", 950, 460, countSettings, image);
+            GenerateImageEntry($"{info.Count} {(info.Count == 1 ? "item": "items")}", 950, 460, countSettings, image);
             
         }
 

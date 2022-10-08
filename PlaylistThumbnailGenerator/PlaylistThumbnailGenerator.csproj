@@ -15,12 +15,16 @@
     <ItemGroup>
       <None Remove="AndadaPro.ttf" />
       <Content Include="AndadaPro.ttf">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <None Remove="NoGuildImage.png" />
-      <Content Include="NoGuildImage.png" />
+      <Content Include="NoGuildImage.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="PlaylistImageGradient.png" />
-      <Content Include="PlaylistImageGradient.png" />
+      <Content Include="PlaylistImageGradient.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

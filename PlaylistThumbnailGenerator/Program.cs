@@ -19,7 +19,7 @@ var info = new PlaylistInfo
 {
     Name = "Testing Playlist.",
     Maker = "t1stm#0329",
-    Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
     IsPublic = true
 };
 
